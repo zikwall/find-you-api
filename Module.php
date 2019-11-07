@@ -17,7 +17,7 @@ class Module extends \yii\base\Module
     /**
      * @var string
      */
-    public $imageUploadPath = '';
+    public $imageUploadPath = '@app/web/uploads';
     /**
      * @var array
      */
