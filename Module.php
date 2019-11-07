@@ -15,6 +15,10 @@ class Module extends \yii\base\Module
      */
     public $securityToken = '';
     /**
+     * @var int 
+     */
+    public $userId = 0;
+    /**
      * @var string
      */
     public $imageUploadPath = '@app/web/uploads';
@@ -27,16 +31,16 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        if (count($this->responseHeaders) == 0) {
+        if (count($this->responseHeaders) <= 0) {
             $this->responseHeaders = $this->getHeaders();
         }
 
         if (Yii::$app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'zikwall\vktv\commands';
+            $this->controllerNamespace = 'zikwall\findyouapi\commands';
         }
     }
 
-    public function getHeaders()
+    public function getHeaders() : array
     {
         return [
             ['Access-Control-Allow-Methods', ['POST', 'OPTIONS']],
@@ -61,7 +65,10 @@ class Module extends \yii\base\Module
         ];
     }
 
-    public static function module()
+    /**
+     * @return Module
+     */
+    public static function module() : Module
     {
         return Yii::$app->getModule('findyouapi');
     }
