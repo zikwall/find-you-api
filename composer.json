@@ -1,0 +1,19 @@
+{
+    "name": "zikwall/find-you-api",
+    "keywords": ["api", "face", "recognition", "php", "yii2"],
+    "support": {
+        "issues": "https://github.com/zikwall/find-you-api/issues?state=open",
+        "source": "https://github.com/zikwall/find-you-api"
+    },
+    "type": "yii2-module",
+    "authors": [
+        {
+            "name": "Andrey Kapitonov",
+            "email": "andrey.kapitonov.96@gmall.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "minimum-stability": "dev"
+}
