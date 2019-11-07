@@ -9,7 +9,7 @@ class RecognizeController extends Controller
 {
     public function beforeAction($action)
     {
-        foreach (Module::get()->responseHeaders as $header) {
+        foreach (Module::module()->responseHeaders as $header) {
             Yii::$app->response->headers->set($header[0], $header[1]);
         }
 

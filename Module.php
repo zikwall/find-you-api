@@ -61,7 +61,7 @@ class Module extends \yii\base\Module
         ];
     }
 
-    public static function get()
+    public static function module()
     {
         return Yii::$app->getModule('findyouapi');
     }
