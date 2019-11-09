@@ -6,6 +6,7 @@ use Yii;
 use zikwall\findyouapi\models\Upload;
 use zikwall\findyouapi\Module;
 use yii\rest\Controller;
+use yii\web\UploadedFile;
 
 class RecognizeController extends Controller
 {
@@ -30,7 +31,7 @@ class RecognizeController extends Controller
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
             $targetFile = sprintf('%s/%s.%s',
-                Module::module()->handleUrl,
+                Yii::getAlias(Module::module()->imageUploadPath),
                 $model->imageFile->baseName,
                 $model->imageFile->extension
             );
@@ -44,7 +45,7 @@ class RecognizeController extends Controller
                 return $this->asJson(['file' => $targetFile, 'res' => $res]);
             }
 
-            return $this->asJson(['not uploaded', 'error' => $model->getErrors(), 'post' => $_POST]);
+            return $this->asJson(['not uploaded', 'file' => $targetFile, 'error' => $model->getErrors(), 'post' => $_POST]);
         }
 
         return $this->asJson([
@@ -62,11 +63,6 @@ class RecognizeController extends Controller
             'uploaded_photo' => new \cURLFile($targetFile, $extension, $filename),
         ];
 
-        $callback = function ($ch, $str) use ($obj) {
-            $obj->result .= strtoupper($str);
-            return strlen($str);
-        };
-
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, Module::module()->handleUrl);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT ,550000000);
@@ -80,8 +76,8 @@ class RecognizeController extends Controller
             'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36',
             'Expect:',
             'Content-Type: multipart/form-data',
-            sprintf('session-key: %s', Module::module()->securityToken),
-            sprintf('user-id: %d', Module::module()->userId)
+            'session-key: ' . Module::module()->securityToken,
+            'user-id: ' . Module::module()->userId
         ]);
 
         $response = curl_exec($curl);
